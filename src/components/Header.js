@@ -1,13 +1,33 @@
 import styled from "styled-components";
 import { auth, provider } from "../firebase";
+import {
+  selectUserName,
+  selectUserPhoto,
+  setUserLoginDetails,
+  setSignOutState,
+} from "../features/user/userSlice";
 
-const Header = (props) => {
-
-  const handleAuth =() =>{
-    auth.signInWithPopup(provider),then((result)=>{
-      console.log(result)
-    }).catch((error.message))
+const handleAuth = () => {
+  if (!userName) {
+    auth
+      .signInWithPopup(provider)
+      .then((result) => {
+        setUser(result.user);
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  } else if (userName) {
+    auth
+      .signOut()
+      .then(() => {
+        dispatch(setSignOutState());
+        history.push("/");
+      })
+      .catch((err) => alert(err.message));
   }
+};
+
   return (
     <Nav>
       <Logo>
